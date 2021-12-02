@@ -31,9 +31,9 @@ def index():
 
     return render_template('empleados/index.html')
 
-#@app.route("/create")
-#def create():
-#    return render_template('empleados/create.html')
+@app.route("/create")
+def create():
+    return render_template('empleados/create.html')
 #@app.route("/store",methods ['POST'])
 #def storage():
 #    _nombre=request.form['txtNombre']
