@@ -7,19 +7,34 @@
     <title>Inicio</title>
 </head>
 <body>
-    <form method="get" action="" enctype="multipart/form-data">
-        Nombre:
-        <input type="text" name="txtNombre" id="txtNombre">
-        <br>
-        Correo
-        <input type="text" name="txtCorreo" id="txtCorreo">
-        <br>
-        <input type="file" name="txtFoto" id="txtFoto">
-        <br>
-        <br>
-        <input type="submit" value="Agregar">
+<table class="table table-light">
+    <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>Foto</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Acciones#</th>
+        
+        </tr>
+    </thead>
+    <tbody>
+            {%for empleado in empleados%}
+            <tr>
+                <td>{{empleado [0]}}</td>
+                <td>{{empleado [3]}}</td>
+                <td>{{empleado [1]}}</td>
+                <td>{{empleado [2]}}</td>
+                <td> <a href="http:/edit/{{empleado [0]}}">Editar</a>
+                    | 
+                   <a href="/destroy/{{empleado [0]}}">Eliminar</a>
+                </td>
 
-    </form>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
 Hola estamos haciendo un CRUD CON FLASK!
 </body>
 </html>
