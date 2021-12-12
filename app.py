@@ -1,10 +1,12 @@
 from os import curdir
 from flask import Flask
-from flask import render_template,request
+from flask import render_template,request, url_for
 from pymysql import cursors
 from werkzeug.utils import redirect
 from flaskext.mysql import MySQL
 from datetime import datetime
+import os
+from flask import send_from_directory
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -12,8 +14,16 @@ app.config['MYSQL_DATABASE_HOST']='localhost'
 app.config['MYSQL_DATABASE_USER']='root'
 app.config['MYSQL_DATABASE_PASSWORD']=''
 app.config['MYSQL_DATABASE_BD']='sistemas1121' 
-
 mysql.init_app(app)
+
+CARPETA= os.path.join('uploads')
+app.config['CARPETA']= CARPETA 
+
+
+@app.route("/uploads/<nombreFoto>")
+def uploads(nombreFoto):
+    return send_from_directory(app.config['CARPETA'],nombreFoto)
+
 
 @app.route('/')
 def index():
@@ -79,6 +89,12 @@ def storage():
 def destroy(id):
     conn= mysql.connect()
     cursor = conn.cursor()
+    cursor.execute("SELECT foto FROM `sistemas1121`.`empleados` WHERE id = %s ", (id))
+    fila = cursor.fetchall()
+
+    os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
+    
+
     cursor.execute("DELETE FROM `sistemas1121`.`empleados` WHERE id = %s ", (id))
     conn.commit()
     return redirect('/')
@@ -104,6 +120,21 @@ def update():
     datos = (_nombre, _correo,id)
     conn = mysql.connect()
     cursor = conn.cursor()
+
+    now = datetime.now()  
+    tiempo = now.strftime("%Y%H%M%S")
+    
+    if _foto.filename!= '':
+        _nuevonombreFoto = tiempo + _foto.filename 
+        _foto.save("uploads/"+_nuevonombreFoto)
+        
+        cursor.execute("SELECT foto FROM `sistemas1121`.`empleados` WHERE id = %s ", (id))
+        fila = cursor.fetchall()
+
+        os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
+        cursor.execute("UPDATE `sistemas1121`.`empleados` SET `foto` = %s  WHERE id = %s ; ", (_nuevonombreFoto,id))
+        conn.commit()
+
     cursor.execute(sql, datos)
     conn.commit()
     return redirect('/')
