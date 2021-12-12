@@ -3,9 +3,10 @@
 Formulario para Editar
 {% for empleado in empleados%}
 
-<form method="get" action="/update" enctype="multipart/form-data">
+<form method="post" action="/update" enctype="multipart/form-data">
     Id:
     <input type="text" value="{{ empleado[0]}}" name="txtId" id="txtId"> 
+    <br>
     Nombre:
     <input type="text"  value="{{ empleado[1]}}"  name="txtNombre" id="txtNombre">
     <br>
@@ -17,11 +18,8 @@ Formulario para Editar
     <input type="file"  name="txtFoto" id="txtFoto">
     <br>
     <br>
-    <input type="submit" value="Agregar">
+    <input type="submit" value="Guardar">
 
 </form>
-
-<form action="/store" method="post" enctype="multipart/form-data">Guardar</form>
-
 
 {% endfor %}
