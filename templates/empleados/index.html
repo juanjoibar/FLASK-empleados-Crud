@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Inicio</title>
-</head>
-<body>
+
+{% include 'header.html' %}
+<br>
+<br>
+<br>
+<a href="{{url_for('create')}}" class="btn btn-success" >Crear</a>
+<br><br>
 <table class="table table-light">
     <thead class="thead-light">
         <tr>
             <th>#</th>
             <th>Foto</th>
+            <th>Nombre Foto</th>
             <th>Nombre</th>
             <th>Correo</th>
             <th>Acciones#</th>
@@ -24,12 +23,15 @@
             
             <tr>
                 <td>{{empleado [0]}}</td>
+                <td>
+                    <img class = "<img class="img-thumbnail" src="{{url_for( 'uploads', nombreFoto = empleado [3])}}" width="100" alt="">
+                </td>
                 <td>{{empleado [3]}}</td>
                 <td>{{empleado [1]}}</td>
                 <td>{{empleado [2]}}</td>
-                <td> <a href="/edit/{{empleado [0]}}">Editar</a>
+                <td> <a class="btn btn-warning"  href="/edit/{{empleado [0]}}">Editar</a>
                     | 
-                   <a href="/destroy/{{empleado [0]}}">Eliminar</a>
+                   <a class="btn btn-danger" onclick=" return confirm ('Desea borrar al empleado?')" href="/destroy/{{empleado [0]}}">Eliminar</a>
                 </td>
 
             </tr>
@@ -38,5 +40,4 @@
 </table>
 
 Hola estamos haciendo un CRUD CON FLASK!
-</body>
-</html>
+{% include 'footer.html' %}
